@@ -27,6 +27,11 @@ def gaus(matrix):
 	diag_matrix = []#Диагональная матрица получившаяся в конце
 	ret_x = [0 for i in range(len(m))]#
 
+	# #
+	# [print(i) for i in m]
+	# print("\n")
+	# #
+
 	while(len(N) > 0):#Пока есть непроверенные столбцы
 		x = N[0]
 		y = 0
@@ -39,7 +44,6 @@ def gaus(matrix):
 			temp_max = min(col)
 
 			if(temp_max == 0):#Проверка на вырожденность матрицы или типо того
-				print("cringe")
 				return []
 
 			#Ищем минимальное значение-------------------------
@@ -66,8 +70,17 @@ def gaus(matrix):
 
 		diag_matrix.append([temp_row,x])#Добавляем в диагональную
 		N.remove(x)#Удаляем столбец из списка
+
+		# #
+		# [print(i) for i in m]
+		# print("\n")
+		# #
 	
 	diag_matrix.reverse()
+	# #
+	# [print(i[0]) for i in diag_matrix]
+	# print("\n")
+	# #
 
 	for row in diag_matrix:#Находим иксы
 		temp_x = row[0][-1]#Значение в строке
