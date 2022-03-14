@@ -1,10 +1,13 @@
-import numpy as np
 import random
 
-n = 3
+n = 6
 
 def transpose(m):
-	if(type(m[0]) == list):
+
+	if(type(m[0]) != list):
+		temp = [[i] for i in m]
+
+	else:
 		if(len(m[0]) == 1):
 			temp = [[r[0] for r in m]]
 		else:
@@ -12,8 +15,6 @@ def transpose(m):
 			for i in range(len(m)):
 				for j in range(len(m[0])):
 					temp[j][i] = m[i][j]
-	else:
-		temp = [[i] for i in m]
 
 	return temp
 
@@ -41,27 +42,36 @@ def dot(a,b):
 		return None
 
 def det(a):
-	if(len(a) == len(a[0])):
-		if(len(a) == 3):
-			sum = 0
-			for i in range(len(a)):
-				p,m = 1,1
-				for j in range(len(a)):
-					p *= a[(i+j)%len(a)][j]
-					m *= a[(i+j)%len(a)][len(a) - 1 - j]
-				print(p,m)
-				sum = sum + p - m
-			return sum
-		elif(len(a) == 2):
-			return a[0][0] *a[1][1] - a[0][1]*a[1][0]
-		else:
-			sum = 0
-			for i in range(len(a)):
-				m = a[1:]
-				#m = HELP 
-				sum += a[0][i] * det()
-	else:
+	if(type(a[0]) != list or len(a) != len(a[0])):
 		return None
+	if(len(a) == 2):
+		return a[0][0] * a[1][1] - a[0][1]*a[1][0]
+	elif(len(a) == 3):
+		sum = 0
+		for i in range(3):
+			p = 1
+			m = 1
+			for j in range(3):
+				p *= a[(i + j)%3][j]
+				m *= a[(i + j)%3][2-j]
+			sum += p
+			sum -= m
+		return sum
+	else:
+		sum = 0
+		for i in range(len(a)):
+			sum += (-1)**i * a[0][i]*det(minor(a,i,0))
+		return sum
+
+def minor(a,x,y):
+	to_ret = []
+	for r in a:
+		temp = r[:]
+		temp.pop(x)
+		to_ret += [temp]
+	to_ret.pop(y)
+	return to_ret
+
 
 def mul(m,a):
 	temp = [r[:] for r in m]
@@ -81,7 +91,11 @@ def plus(a,b):
 	return temp
 
 def inv(a):
-	return mul(transpose(a),1/det(a))
+	c = [r[:] for r in a]
+	for i in range(len(a)):
+		for j in range(len(a[0])):
+			c[i][j] = (-1)**(i + j)*det(minor(a,j,i))
+	return mul(transpose(c),1/det(a))
 
 def pre_generate():
 	l = [ [0 for i in range(n)] for j in range(n)]
@@ -111,23 +125,18 @@ def newtons_method(x,a,b):
 
 a, b = pre_generate()
 
-# one = transpose(a)
-# two = np.transpose(a)
-# # print(one, two)
-# for i in one:
-# 	print(i)
-# print("")
-# for i in two:
-# 	print(i)
 for i in a:
 	print(i)
-print(det(a))
-
-# x = [[0] for i in range(n)]
-
-# print(func(x,a,b))
-
-# get = newtons_method(x,a,b)
-
-# for i in get:
-# 	print(i)
+print(" ")
+print(b)
+print()
+x = newtons_method([[0] for i in range(n)], a, b)
+print(x)
+min_of_func = func(x, a, b)
+print(min_of_func)
+#Near
+print("near point")
+x = plus(x, [[0.001] for i in range(n)])
+other_func = func(x, a, b)
+print(other_func)
+print("is min:",other_func > min_of_func)
