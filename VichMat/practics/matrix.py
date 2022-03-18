@@ -1,3 +1,11 @@
+def check_x(matrix,b,x):
+	print("Check")
+	for index in range(len(matrix)):
+		temp = 0
+		for cel_index in range(len(matrix[index])):
+			temp += x[cel_index] * matrix[index][cel_index]
+		print("D", abs(temp - b[index]))
+
 def transpose(m):
 
 	if(type(m[0]) != list):
@@ -14,29 +22,39 @@ def transpose(m):
 
 	return temp
 
-def dot(a,b = None):
-	if(b == None):
-		b = a
+def dot(A,B = None):
+	a,b = None, None
+	if(B == None):
+		B = A
 
-	if(type(a) != list or type(b) != list):
+	if(type(A) != list or type(B) != list):
 		print("Not list")
 		return None
 
-	if(type(a[0]) != list and type(b[0]) != list):
-		a = transpose(a)
-		b = transpose(transpose(b))
+	if(type(A[0]) != list and type(B[0]) != list):
+		a = transpose(A)
+		b = transpose(transpose(B))
 
-	elif(type(a[0]) != list):
-		a = [a]
-		print("first not 2 dim")
-		if(type(b[0]) != list and len(b) == 1):
-			transpose(a)
+	elif(type(A[0]) != list):
+		if(len(A) == len(B)):
+			a = transpose(A)
+		elif(len(B) == 1):
+			a = transpose(transpose(A))
+		else:
+			return None
 
-	elif(type(b[0]) != list):
-		b = [b]
-		print("second not 2 dim")
-		if(len(a[0]) == 1):
-			transpose(b)
+	elif(type(B[0]) != list):
+		if(len(A[0]) == len(B)):
+			b = transpose(transpose(B))
+		elif(len(A[0]) == 1):
+			b = transpose(B)
+		else:
+			return None
+
+	if(a == None):
+		a = [r[:] for r in A]
+	if(b == None):
+		b = [r[:] for r in B]
 
 	if(len(a[0]) == len(b)):
 		temp = [[0 for j in range(len(b[0]))] for i in range(len(a))]
@@ -140,8 +158,8 @@ def solve_triangle(A,B):
 	x.reverse()
 	for i in range(len(a)):
 		for j in range(i):
-			b[i][0] -= a[i][j]*x[j]
-		x[i] = b[i][0]/a[i][i]
+			b[i] -= a[i][j]*x[j]
+		x[i] = b[i]/a[i][i]
+		# print("x", x)
 	x.reverse()
-
 	return x 
