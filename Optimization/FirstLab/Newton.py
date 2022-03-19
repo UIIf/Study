@@ -147,12 +147,9 @@ def newtons_method(x,a,b):
 
 def grad_method(x,a,b,step = 0.0001):
 	xn = [r[:] for r in x]
-	start = 0
-	end = 1
-	while(step > 0.0000000000001):
-	# for i in range(10000):
+	while(step > 0.000000001):
 		start = func(xn,a,b)
-		d = dfunc(x,a,b)
+		d = dfunc(xn,a,b)
 		right  = mul(d ,-step)
 		xn = plus(xn, right)
 		end = func(xn,a,b)
