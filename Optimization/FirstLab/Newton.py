@@ -1,6 +1,6 @@
 import random
 
-n = 6
+n = 3
 
 def transpose(m):
 
@@ -18,17 +18,39 @@ def transpose(m):
 
 	return temp
 
-def dot(a,b):
+def dot(A,B = None):
+	a,b = None, None
+	if(B == None):
+		B = A
 
-	if(type(a[0]) != list):
-		a = [a]
-		if(type(b[0]) != list and len(b) == 1):
-			transpose(a)
+	if(type(A) != list or type(B) != list):
+		print("Not list")
+		return None
 
-	if(type(b[0]) != list):
-		b = [b]
-		if(len(a[0]) == 1):
-			transpose(b)
+	if(type(A[0]) != list and type(B[0]) != list):
+		a = transpose(A)
+		b = transpose(transpose(B))
+
+	elif(type(A[0]) != list):
+		if(len(A) == len(B)):
+			a = transpose(A)
+		elif(len(B) == 1):
+			a = transpose(transpose(A))
+		else:
+			return None
+
+	elif(type(B[0]) != list):
+		if(len(A[0]) == len(B)):
+			b = transpose(transpose(B))
+		elif(len(A[0]) == 1):
+			b = transpose(B)
+		else:
+			return None
+
+	if(a == None):
+		a = [r[:] for r in A]
+	if(b == None):
+		b = [r[:] for r in B]
 
 	if(len(a[0]) == len(b)):
 		temp = [[0 for j in range(len(b[0]))] for i in range(len(a))]
@@ -39,6 +61,7 @@ def dot(a,b):
 			temp = temp[0][0]
 		return temp
 	else:
+		print("lens not eq", len(a[0]), len(b))
 		return None
 
 def det(a):
@@ -100,14 +123,14 @@ def inv(a):
 def pre_generate():
 	l = [ [0 for i in range(n)] for j in range(n)]
 	for i in range(n):
-		l[i][i] = random.randint(1,10)
+		l[i][i] = random.randint(1,5)
 
 	for i in range(1, n):
 		for j in range(i):
-			l[i][j] = random.randint(-10,10)
+			l[i][j] = random.randint(-5,5)
 	a = dot(l, transpose(l))
 
-	b = [[random.randint(-10,10) for i in range(n)]]
+	b = [[random.randint(-5,5) for i in range(n)]]
 	return [a,b]
 
 def func(x,a,b):
@@ -121,22 +144,63 @@ def ddfunc(x,a,b):
 
 def newtons_method(x,a,b):
 	return plus(x, mul(dot(inv(ddfunc(x,a,b)), dfunc(x,a,b)) ,-1))
-	
+
+def grad_method(x,a,b,step = 0.0001):
+	xn = [r[:] for r in x]
+	while(step > 0.000000001):
+		start = func(xn,a,b)
+		d = dfunc(xn,a,b)
+		right  = mul(d ,-step)
+		xn = plus(xn, right)
+		end = func(xn,a,b)
+		if(start < end):
+			step /= 10
+	return xn
 
 a, b = pre_generate()
 
+a = [
+	[49, -56, 28],
+	[-56, 164, 18],
+	[28, 18, 122]
+]
+b = [[-8, 1, 3]]
+print("A")
 for i in a:
 	print(i)
-print(" ")
-print(b)
 print()
-x = newtons_method([[0] for i in range(n)], a, b)
-print(x)
-min_of_func = func(x, a, b)
-print(min_of_func)
-#Near
-print("near point")
-x = plus(x, [[0.001] for i in range(n)])
-other_func = func(x, a, b)
-print(other_func)
-print("is min:",other_func > min_of_func)
+print("B",b)
+print()
+
+print("Newton")
+xn = [[0] for i in range(n)]
+print("x",xn)
+min_of_func_n = func(xn, a, b)
+print("f",min_of_func_n)
+xn = newtons_method(xn, a, b)
+print("Newton x",xn)
+min_of_func_n = func(xn, a, b)
+print("Newton f",min_of_func_n)
+print()
+
+print("Grad from zero")
+xg = [[0] for i in range(n)]
+print("x",xg)
+min_of_func_g = func(xg, a, b)
+print("f",min_of_func_g)
+xg = grad_method(xg, a, b)
+print("Grad x",xg)
+min_of_func_g = func(xg, a, b)
+print("Grad f",min_of_func_g)
+print()
+
+print("Grad from rand")
+xr = [[random.randint(-100, 100)]for i in range(n)]
+print("x",xr)
+min_of_func_r = func(xr, a, b)
+print("f",min_of_func_r)
+xr = grad_method(xr , a, b)
+print("Grad rand x",xg)
+min_of_func_g = func(xg, a, b)
+print("Grad rand f",min_of_func_g)
+print()

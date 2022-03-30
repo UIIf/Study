@@ -41,30 +41,31 @@ def generate_l_u(matrix):
 	u = [[0]*len(r) for r in matrix]
 	l = [[0]*len(r) for r in matrix]
 
+	#Пустая матрица U
 	u[0] = matrix[0][:]
 
+	#Первая строка матрицы l делится на первый элемент
 	for i in range(len(matrix)):
 		l[i][0] = matrix[i][0]/matrix[0][0]
 
-	
-
+	#Для итерации
 	for i in range(1, len(matrix)):
+		#не помню
 		for j in range(i, len(matrix)):
-			
+			#Произведение строки l на столбец u
 			temp = [l[i][k] * u[k][j] for k in range(i)]
-			# print("u", matrix[i][j],temp)
+			#Заполняем u
 			u[i][j] = matrix[i][j] - sum(temp)
-
+			#Произведение строки l на столбец u
 			temp = [l[j][k] * u[k][i] for k in range(i)]
-			# print("l",i,j,matrix[j][i],temp)
+			#Заполняем l
 			l[j][i] = (matrix[j][i] - sum(temp))/u[i][i]
-
 
 	return [u,l]
 
 def find_result(l,u,b):
 	y = [0 for i in u]
-
+	#Для каждой строки
 	for i in range(len(u)):
 		y[i] = b[i] - sum([l[i][p]*y[p] for p in range(i)])
 
