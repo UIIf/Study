@@ -85,6 +85,16 @@ def check_x(matrix,b,x):
 
 u, l = generate_l_u(matrix)
 
+print("A")
+for i in matrix:
+	print(i)
+print("L")
+for i in l:
+	print(i)
+print("U")
+for i in u:
+	print(i)
+print("X")
 x = find_result(l,u,b)
 print(x)
 
