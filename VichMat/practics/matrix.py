@@ -163,3 +163,11 @@ def solve_triangle(A,B):
 		# print("x", x)
 	x.reverse()
 	return x 
+
+def vector_norm_1(vec):
+	if(len(vec) == 2):
+		if(len(vec[0]) == 1):
+			vec = [i[0] for i in vec]
+		else:
+			vec = vec[0]
+	return sum([abs(x) for x in vec])
