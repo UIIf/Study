@@ -27,9 +27,14 @@ def dot(A,B = None):
 	if(B == None):
 		B = A
 
+	if(type(A) != list and type(B) != list):
+		return A*B
+
 	if(type(A) != list or type(B) != list):
-		print("Not list")
-		return None
+		if(type(A) != list):
+			return mul(B,A)
+		else:
+			return mul(A,B)
 
 	if(type(A[0]) != list and type(B[0]) != list):
 		a = transpose(A)
@@ -61,8 +66,8 @@ def dot(A,B = None):
 		for i in range(len(a)):
 			for j in range(len(b[0])):
 				temp[i][j] = sum([a[i][k] * b[k][j] for k in range(len(b))])
-		if(len(temp) == 1 and len(temp[0]) == 1):
-			temp = temp[0][0]
+		# if(len(temp) == 1 and len(temp[0]) == 1):
+		# 	temp = temp[0][0]
 		return temp
 	else:
 		print("lens not eq", len(a[0]), len(b))
@@ -98,6 +103,11 @@ def minor(a,x,y):
 		to_ret += [temp]
 	to_ret.pop(y)
 	return to_ret
+
+def main_minor(a,x):
+	if(len(a) >= x and len(a[0]) >= x):
+		return [ [a[i][j] for j in range(x)] for i in range(x)]
+	return None
 
 
 def mul(m,a):
@@ -139,6 +149,27 @@ def inv(a):
 		for j in range(len(a[0])):
 			c[i][j] = (-1)**(i + j)*det(minor(a,j,i))
 	return mul(transpose(c),1/det(a))
+
+def inv_rec(matrix):
+	prev_inv = [[1/matrix[0][0]]]
+	counter = 1
+	while(len(prev_inv) < len(matrix)):
+		counter += 1
+		temp_m = main_minor(matrix,counter)
+		v = [temp_m[counter-1][:-1]]
+		u = [ [temp_m[i][counter-1]] for i in range(counter-1)]
+
+		alpha = 1/(temp_m[counter-1][counter-1] - dot(dot(v,prev_inv),u)[0][0])
+		Pn = plus(prev_inv,mul(dot(dot(dot(prev_inv,u),v),prev_inv),alpha))
+		rn = mul(dot(prev_inv,u), -alpha)
+		qn = mul(dot(v,prev_inv), -alpha)
+
+		prev_inv = Pn
+		for i in range(len(rn)):
+			prev_inv[i].append(rn[i][0])
+		qn[0].append(alpha)
+		prev_inv.append(qn[0])
+	return prev_inv
 
 def ones(s):
 	I = [[0]*s for i in range(s)]
