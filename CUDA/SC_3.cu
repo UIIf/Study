@@ -1,77 +1,77 @@
-#include <chrono>
 #include <iostream>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include <string>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/opencv.hpp>
-#include <vector_types.h>
+#include <cuda.h>
+#include "SC_3.h"
 
-#include "openMP.hpp"
-#include "CUDA_wrappers.hpp"
-#include "common/image_helpers.hpp"
-
-template <class T1, class T2>
-void prepareImagePointers(	const char * const inputImageFileName,
-							cv::Mat& inputImage, 
-							T1** inputImageArray, 
-							cv::Mat& outputImage,
-							T2** outputImageArray, 
-							const int outputImageType)
-{
-	using namespace std;
-	using namespace cv;
-
-	inputImage = imread(inputImageFileName, IMREAD_COLOR);
-
-	if (inputImage.empty()) 
-	{
-		cerr << "Couldn't open input file." << endl;
-		exit(1);
-	}
-
-	//allocate memory for the output
-	outputImage.create(inputImage.rows, inputImage.cols, outputImageType);
-
-	cvtColor(inputImage, inputImage, cv::COLOR_BGR2BGRA);
-
-	*inputImageArray = (T1*)inputImage.ptr<char>(0);
-	*outputImageArray  = (T2*)outputImage.ptr<char>(0); 
-}
-
-
-
-
-using namespace cv;
 using namespace std;
 
-int main( int argc, char** argv )
+
+ 
+ 
+static unsigned short read_u16(FILE *fp);
+static unsigned int   read_u32(FILE *fp);
+static int            read_s32(FILE *fp);
+
+static void write_u16(FILE *fp, unsigned short val);
+static void write_u32(FILE *fp, unsigned int val);
+static void write_s32(FILE *fp, int val);
+
+
+
+__global__ 
+void make_gray_scale(RGBQUAD **rgb,int height, int N)
 {
-  using namespace std::chrono;
+    int id = threadIdx.x + blockIdx.x * blockDim.x;
+	
+    int x = id/height;
+    int y = id%height;
 
-  if( argc != 2)
-  {
-    cout <<" Usage: convert_to_grayscale imagefile" << endl;
-    return -1;
-  }
-
-  Mat image, imageGray;
-  uchar4 *imageArray;
-  unsigned char *imageGrayArray;
-
-  prepareImagePointers(argv[1], image, &imageArray, imageGray, &imageGrayArray, CV_8UC1);
-
-  int numRows = image.rows, numCols = image.cols;
-
-  auto start = system_clock::now();
-  RGBtoGrayscaleOpenMP(imageArray, imageGrayArray, numRows, numCols);
-  auto duration = duration_cast<milliseconds>(system_clock::now() - start);
-  cout<<"OpenMP time (ms):" << duration.count() << endl;
-
-  memset(imageGrayArray, 0, sizeof(unsigned char)*numRows*numCols);  
-
-  RGBtoGrayscaleCUDA(imageArray, imageGrayArray, numRows, numCols);
-
-  return 0;
+	if(id < N){
+        rgb[x][y].grayScale = char(0.299*rgb[x][y].r + 0.587*rgb[x][y].g + 0.114*rgb[x][y].b);
+	}
+		
 }
+
+int main()
+{
+    BITMAPFILEHEADER header __attribute__((unused));
+    BITMAPINFOHEADER bmiHeader;
+
+    string eOfStr;
+    string ending;
+
+    RGBQUAD **rgb = read_bmp(header, bmiHeader, eOfStr,ending);
+
+    cout<<"Read"<<endl;
+
+    int N = bmiHeader.biHeight * bmiHeader.biWidth;
+
+    int threadsCount = 512;
+    int blockCount = N/threadsCount + 1;
+
+    cout<<rgb[0][0].r<<' '<<rgb[0][0].g<<' '<<rgb[0][0].b<<endl;
+    make_gray_scale<<<blockCount, threadsCount>>>(rgb, bmiHeader.biHeight, N);
+    cudaDeviceSynchronize();
+    cout<<rgb[0][0].grayScale<<endl;
+    cout<<"Gray"<<endl;
+
+    write_bmp(rgb, header, bmiHeader, eOfStr,ending);
+
+    cout<<"Write"<<endl;
+
+    for(int i = 0; i < bmiHeader.biWidth; i++){
+        cudaFree(rgb[i]);
+    }
+    cudaFree(rgb);
+
+    return 0;
+}
+ 
+ 
+
+ 
+ 
