@@ -12,6 +12,35 @@
 \usepackage{float} 
 
 \usepackage{caption}
+
+%----------------------------------------------------
+\setmonofont{Consolas} %to be used with XeLaTeX or LuaLaTeX
+\definecolor{bluekeywords}{rgb}{0,0,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
+\definecolor{types}{rgb}{0.17,0.57,0.68}
+
+\usepackage{listings}
+\lstset{language=[Sharp]C,
+captionpos=b,
+%numbers=left, %Nummerierung
+%numberstyle=\tiny, % kleine Zeilennummern
+frame=lines, % Oberhalb und unterhalb des Listings ist eine Linie
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+morekeywords={partial, var, value, get, set},
+keywordstyle=\color{bluekeywords},
+stringstyle=\color{redstrings},
+basicstyle=\ttfamily\small,
+}
+%----------------------------------------------------
+
 % \captionsetup[figure]{font=small}
 
 \newcommand{\InsertGraf}[2]{
@@ -57,55 +86,447 @@
 	%--------------------------------------------------------------------
 	\section*{Введение}
 	\addcontentsline{toc}{section}{Введение}
-	В последнее время все большие обороты набирает гейм индустрия, и дело не только в том, что людям требуется интересное проведение досуга. Так же компьютерные игры могут быть использованны в сфере образрования, науки, промышленности и в других сферах деятельности человека. Кроме того сама по себе разработка игр - достаточно интересный вид деятельности. 
+В последнее время все большие обороты набирает гейм индустрия, или индустрия компьютерных игр (сектор экономики, связанный с разработкой, продвижением и продажей компьютерных игр). Масштабы ее можно сравнить, например, с киноиндустрией. Но скорость роста гейм индустрии за последние пять лет все же существенно больше.
+
+Некоторые компьютерные игры удивляют и даже признаются произведениями искусства. Количество игроков растет (в 2019 г. насчитывалось 2,5 млрд. игроков), а сам гейминг становится высокооплачиваемой профессией. 
+
+Вокруг ядра, состоящего из разработчиков игр и издателей, развиваются профильные СМИ, специальные финансовые и рекламные инструменты; появляются специализированные физические площадки (интернет-кафе нового поколения, локации для кибертурниров и др.); разработке игр начинают обучать в высших учебных заведениях и др. Кроме того, занять свою нишу хотят и игроки со смежных рынков – производители электроники (например, Apple) или интернет-корпорации (например, Google), обладающие всеми ресурсами для вывода на рынок перспективных игровых решений.
+
+Что касается ключевых тенденций, определяющих развитие глобальной игровой индустрии, то здесь, в первую очередь, необходимо отметить новые технологии: мобильные, облачные, виртуальные, графические, искусственный интеллект и др. Уже в течение нескольких лет компьютерные игры активно интегрируются в соцсети. Также появился и обратный тренд – они сами становятся своеобразными соцсетями. Растет популярность киберспорта.
+
+Использование и применение компьютерных игр – это не только проведение досуга. Так же они могут быть использованы в сфере образования, науки, промышленности и в других сферах деятельности человека. 
+
+Разработка игр - достаточно интересный вид деятельности. Университет дает достаточно знаний для того чтобы начать погружение в эту сферу.
+
+Цель данной работы: применение знаний, полученных при обучении, на практике - создание прототипа будущего игрового проекта в жанре Top-down shooter при помощи Unity
+
+Для достижения данной цели были поставлены следующие задачи:
+\begin{itemize}
+\item познакомиться с различными классификациями жанров компьютерных игр 
+\item провести анализ предметной области
+\item освоить инструментальные средства
+\item осуществить создание пространства
+\end{itemize}
+    \section*{Аналитическая часть}
+	\addcontentsline{toc}{section}{Аналитическая часть}
 	
-	Университет дает достаточно знаний для того, чтобы начать погружение в эту сферу. Задачей стало применение их на практике. 
-	
-    % В данной курсовой работе речь пойдет о создании прототипа будущего игрового проекта ‹‹That’s enough››, который и будет являться объектом исследования. 
-    % В первой главе данной курсовой работы приводится аналитическая часть, в которой рассматриваются все аспекты проекта для будущей реализации.
-    % Во второй главе приведены этапы разработки прототипа компьютерной игры с описанием реализованных в ходе работы алгоритмов.
-    % В заключении приведены выводы по курсовой работе.
-    Цель работы: создание прототипа будущего игрового проекта в жанре Top-down shooter, на базе Unity.
-    
-    Задачи:
-    \begin{itemize}
-        \item Познакомиться с игровой индустрией
-        \item Представить конечный вид проекта
-        \item Подобрать необходимую теоретическую базу
-        \item Написать прототип проекта
+	Игры разделяются на жанры. Классификаций данных жанров большое множество.
+К примеру классификация по Крофуорду, где игры делятся на две большие группы: зависящие от навыка и стратегии.
+
+	Эти группы в свою очередь тоже делятся на подгруппы
+
+	Зависящие от навыка:
+	\begin{itemize}
+		\item Спортивные игры
+		\item Гонки
+		\item Лабиринты
+		\item Игры с прямым соперничеством
+	\end{itemize}
+
+	Стратегии:
+	\begin{itemize}
+		\item Приключенчиские (акцент на самих приключениях)
+		\item Фентезийные (акцент на мире)
+		\item Военные игры (акцент на противостоянии)
+		\item Игры основанные на случайности
+	\end{itemize}
+
+Так же интересно звучит классификация по Шмелеву.
+Здесь игры делятся на :
+\begin{itemize}
+	\item Головоломки
+	\item Азартные игры
+	\item Управленческо-экономические
+\end{itemize}
+и другие.
+
+Наиболее распространенной на мой взгляд является классификация по Орланду, Стейнбергу и Томасу.
+	Жанры:
+	\begin{itemize}
+		\item Action
+		\item Adventure
+		\item Role-playing
+		\item Shoot 'em up
+	\end{itemize}
+	и другие.
+
+Shoot 'em up - вид компьютерных игр в которых главный персонаж, автоматически передвигаясь вперед по уровню растреливает толпы противников, одновременно минуя препядствия. Отличаются неистовым темпом, основываются на показных боях с использованием оружия и большим количеством противников. 
+
+В данном случае нас интереусет поджанр Shoot 'em up известный как Top-down shooter. В основном эти игры отличаются, способом перемещения персонажа, игроку дается больший контроль в управлении. Так же камера распологается с верху, а так же стрельба ведется при помощи мыши. Наиболие известной игрой данного жанра является "Hotline Miami". Для создания собственной игры можно поизаимствовать строение карты, а именно то что на карте отсутствуют просторные, открытые локации.
+
+Проанализировав индустрию, заметим что все больше число игр обладают элементами поджанра RougLike.
+
+RougLike - поджанр ролевых игр хорактеризующийся спуском в случайно сгенерированное подземелье и окончательной смертью игрока.
+
+Отсюда возьмем случайногененрируемую карту, что увеличит реиграбильность и удержание игры.
+
+После всего этого можно составить дизайн документ(документ в котором будут содержаться основные идеи, которые должны быть реализованны в игре).
+
+Дизайн документ:
+\begin{itemize}
+	\item Высокая скорость перемещения
+	\item Ограниченный боезапас для огнестрельного оружия (нет перезарядки, для оружия 2 ячейки, оружие выбрасывается и подбирается с пола новое)
+	\item Выброшенное оружие при попадании во врага оглушает его
+	\item Метательное оружие (гранаты)
+	\item Полоска здоровья, здоровье врагов увеличивается по мере прохождения
+    \item Чтобы завершить игру игроку нужно найти несколько артефактов
+
+	\item \textbf{Игровой мир:}
+	Генерация мира(комнат) с удалением блоков, находящихся далеко от игрока 
+
+	\item \textbf{Игровая механика:}
+	Периодически случайным образом будут появляться комнаты с новым типом оружия, которое после взятия будет так же появляться у врагов
+
+	\item \textbf{Интерфейс:}
+	Количество здоровья, ячейки оружия, ячейка метательного оружия, количество патронов в выбранном оружии, если оно огнестрельное.
+
+	\item \textbf{Враги:}
+	Несколько типов врагов, отличающиеся количеством здоровья, внимательностью и скоростью перемещения
+\end{itemize}
+	\section*{Анализ технической части}
+	\addcontentsline{toc}{section}{Анализ технической части}
+
+    Задачей является написать игру при помощи Unity. Что же это такоей?
+
+Unity - среда для разработки компьютерных игр. Одним из главных его приемуществ является простота в использовании, а так же межплатформенность. Поддерживаются более 20 платформ, от компьютеров под управлением Windows до интернет приложений.
+
+Unity обладает удобным и понятным drag\&drop интерфейсом. Поддерживаются два языка C\# и JavaScript.
+
+Структура:
+	Проект делится на сцены(уровни) - отдельные файлы содержащие сови объекты и сценарии.
+	Объекты сцены содержат компоненты, с которыми взаимодействуют скрипты. Объекты обязаны иметь такие поля как имя, слой и тег, а так же компонент Transform который отвечает за положение в пространстве. Слои отвечают, например за физику. В настройках можно поставить какие слои пересекаются при симуляции физики. При помощи имени или тега можно находить или отличать объекты на сцене. Так же у объектов с видимым представлением есть компонент MeshRenderer который отвечает за отрисовку модели на экран.
+
+	Для симуляции столкновений, в юнити объекту необходимо добавит физическое отображение(Collider). В зависимости от назначения объекта это физическое отображение может быть более или менее точным. Для 3D варианта, есть несколько основных типов - прямоугольный, капсул, сфера или же mesh collider. В последнем случае Unity  создает колайдер основываясь на 3D модели, желательно не использовать этот вариант. В сложных случаях можно использовать несколько прямоугольных колайдеров, в целях оптимизации вычисления.
+
+Так же в Unity уже встроены такие мощные интрументы как карты нормалей и динамическое освещение.
+
+Немного о исполнение проекта. Каждый объект наследуется от класса MonoBeheaviour в котором есть встроенные функции.
+	Основные функции класса MonoBehaviour:
+	\begin{itemize}
+	\item Start - вызывается в кадр когда объект включается 
+	\item Awake - вызывается когда объект класса загружен
+	\item Update - вызывается каждый кадр когда объек включен
+	\item FixedUpdate - вызывается независимо от обновления кадров с постоянным шагом во времени. Здесь же обрабатывается физика.
     \end{itemize}
+Так же в юнити есть удобный инструмент - Coroutine. Он позволяет сделать вид многопоточности при использовании одного потока.
 
-    \section*{Первая часть}
-	\addcontentsline{toc}{section}{Первая часть}
+    \section*{Реализация}
+	\addcontentsline{toc}{section}{Реализация}
+	\subsection*{Камера}
+	\addcontentsline{toc}{subsection}{Работа с камерой}
+	Разработку игры было решено начать с создания камеры. 
 	
-	%Что то про пользу игр
-	%
+	По задумке она должна быть не просто над игроком, а плавно перемещаться между камерой и курсором. Для этого был создан CamScript.
+
+    \begin{lstlisting}[caption= Основная функция камеры, label=lst:test]
+    private void LookingLogic()
+    {
+        Plane plane = new Plane(Vector3.up, _transform.position);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (!plane.Raycast(ray, out hitDistance))
+        {
+            return;
+        }
+
+        targetPoint = ray.GetPoint(hitDistance);
+
+        if (Vector3.Distance(targetPoint, transform.position) < minimalDist)
+        {
+            targetPoint = (targetPoint - transform.position).normalized * minimalDist + transform.position;
+        }
+
+        Vector3 targetRotation = _transform.eulerAngles;
+        targetRotation.y = Quaternion.LookRotation(targetPoint - _transform.position).eulerAngles.y; 
+        _transform.eulerAngles = targetRotation;
+
+        CamMove();
+
+    }
+    \end{lstlisting}
+
+    Каждый раз в FixedUpdate вызывается функция LookingLogic. В ней, создается плоскость и луч, исходящий из центра камеры через курсор и проверятеся точка пересечения луча и плоскости. Координаты пересечения хранятся в переменной targetPoint. Дальше если расстояние между точкой и игроком меньше установленной длины, то находится нормализованный вектор направления от игрока к прицелу, умножается на необходимое расстояние и прибавляется к координатам игрока. 
+    Таким образом прицел внутри ограничевается окружностью.
+    
+    После этого камера врощает игрока, в сторону прицела и камера начинает двигаться.
+    
+    %CamMove
+    \begin{lstlisting}[caption= Функция передвижения камеры, label=lst:test]
+    
+    private void CamMove()
+    {
+        if (Mathf.Abs(targetPoint.x - _transform.position.x) < maxShotDist)
+        {
+            newCamX = (targetPoint.x - _transform.position.x);
+        }
+        else
+        {
+            if (targetPoint.x - _transform.position.x < 0)
+                newCamX = -maxShotDist;
+            else
+                newCamX = maxShotDist;
+
+        }
+        newCamX = newCamX * percntsCamDist + _transform.position.x;
+
+        if (Mathf.Abs(targetPoint.z - _transform.position.z) < maxShotDist)
+        {
+            newCamZ = (targetPoint.z - _transform.position.z);
+        }
+        else
+        {
+            if (targetPoint.z - _transform.position.z < 0)
+                newCamZ = -maxShotDist;
+            else
+                newCamZ = maxShotDist;
+        }
+        newCamZ = newCamZ * percntsCamDist + _transform.position.z;
+
+
+        cam.transform.position = Vector3.Lerp(cam.transform.position,
+                                              new Vector3(
+                                                  newCamX,
+                                                  camY,
+                                                  newCamZ),
+                                              VectoroTEmpo);
+    }
+    
+    \end{lstlisting}
+    
+    В переменных newCamX и newCamZ хранится расстояние между игроком и предполагаемым прицелом. Таким образом перемещение камеры ограничивается снаружи квадратом.
+    
+    После чего камера передвигается на полученное растояние умноженное на процент VectroTEmpo. В нашем случае, камера находится на 30\% между игроком и прицелом.
+    
+    \subsection*{Процедурная карта}
+	\addcontentsline{toc}{subsection}{Создание процедурной карты}
 	
-	% ДИЗДОК
-	Геймплей
-Высокая скорость перемещения
-Ограниченный боезапас для огнестрельного оружия (нет перезарядки, для оружия 2 ячейки, оружие выбрасывается и подбирается с пола новое)
-Выброшенное оружие при попадании во врага оглушает его
-Метательное оружие (гранаты)
-Полоска здоровья, здоровье врагов увеличивается по мере прохождения
-(?) Чтобы завершить игру игроку нужно найти несколько артефактов
-
-Игровой мир
-Генерация мира(комнат) с удалением блоков, находящихся далеко от игрока 
-
-Игровая механика
-Периодически случайным образом будут появляться комнаты с новым типом оружия, которое после взятия будет так же появляться у врагов
-
-Интерфейс
-Количество здоровья, ячейки оружия, ячейка метательного оружия, количество патронов в выбранном оружии, если оно огнестрельное.
-
-Враги
-Несколько типов врагов, отличающиеся количеством здоровья, внимательностью и скоростью перемещения
-    % ДИЗДОК
+	Следующим шагом было решено заняться картой.
 	
-	\section*{Вторая часть}
-	\addcontentsline{toc}{section}{Вторая часть}
+	Карта будет состоять из одинаковых по размеру прямоугольников, выбранных из набора заготовленных комнат.
+	Но при генерации карты, так же необходимо удалять комнаты которые уже не нужны.
 	
+	Был создан объект класса MapGenerator. Он привязывается к игроку и ходит за ним дискретными шагами, которые равны размерам комнат. При перемещении объекта генератора сначала список комнат сортируется по расстоянию от игрока, потом он проверяется вокруг себя комнаты в переделах сетки 3x3 комнаты, и если там отсутствует пол удаляет самую дальнюю комнату вместе со всеми дверьми с которыми она соприкасается и создает новую. Из различныв списков выбираются различные части комнат, такие как обои, материал пола, внешние стены. При создании внешних стен, проверяется, если есть соседняя комната, то стена дублирует стену этой соседней комнаты и туда вставляется дверь, а так же компонент необходимый для передвижения противников сквозь двери. Дальше проверятся какая комната будет по назначению. Пока есть только обычная комната и комната с оружием. Если создается комната с оружием, проверятеся, если такая комната уже есть, то она становится обычной комнатой. Далее создается внутренняя часть комнаты. Вызывается функция добавления внутенних дверей. В ней выбирается одна из дверей и вставляется в каждое отведенное ей место. Дальше появляются противники. В комнате с оружием, появлятся либо новое оружие из списка еще не использованных, если же игрок уже нашел все оружия, то генерируется случайное из уже виденых.
+    \begin{lstlisting}[caption= Генератор карты, label=lst:test]
+    void MoveGenerator()
+    {
+        Vector3 temp = (_folowingTransform.position - _transform.position);
+        //Discrete move x
+        if (Mathf.Abs(temp.x) > sizeX)
+        {
+            
+            maximilian = (int)_folowingTransform.position.x / sizeX;
+            if (maximilian%2 != 0)
+                maximilian += Mathf.Sign(temp.x);
+
+            _transform.position = new Vector3(
+                maximilian * sizeX,
+                _transform.position.y,
+                _transform.position.z
+                );
+            GenerateRooms();
+        }
+        //Discrete move z
+        if (Mathf.Abs(temp.z) > sizeZ)
+        {
+            maximilian = (int)_folowingTransform.position.z / sizeZ;
+            if (maximilian%2 != 0)
+                maximilian += Mathf.Sign(temp.z);
+
+            _transform.position = new Vector3(
+                _transform.position.x,
+                _transform.position.y,
+                maximilian * sizeZ
+                );
+            GenerateRooms();
+        }
+    }
+    
+    void GenerateRooms()
+    {
+        generatedMap.ForEach((el1) => el1.ResetDist(_transform.position));
+        generatedMap.Sort((emp2,emp1) => emp1.sDistance.CompareTo(emp2.sDistance));
+        
+        //Grid of rooms
+        for(int i = -1; i <= 1; i++)
+        {
+            for(int j = -1; j <= 1; j++)
+            {
+                generatedRoom = GenerateRoom(i, j);
+                if (!(generatedRoom is null))
+                {
+                    AddRoom();
+                }
+            }
+        }
+    }
+
+    void AddRoom()
+    {
+        while(generatedMap.Count >= maxRoomCount)
+        {
+            DeleteRoom(generatedMap[0]);
+            generatedMap.RemoveAt(0);
+        }
+        generatedMap.Add(generatedRoom);
+    }
+    
+    //Create room
+    RoomAndDist GenerateRoom(int iX, int iZ)
+    {
+        float cZ = _transform.position.z + sizeZ * iZ * 2;
+        float cX = _transform.position.x + sizeX * iX * 2;
+        if (Physics.OverlapBox(new Vector3(cX, 0, cZ), Vector3.one, _transform.rotation, floorLayerMask).Length > 0)
+        {
+            return null;
+        }
+        GameObject tempRoom;
+        RoomType roomType;
+        tempRoom = new GameObject("room" + cX.ToString()+ ":" + cZ.ToString());
+        tempRoom.transform.position = new Vector3(cX, 0, cZ);
+        Material roomMat = RandomWallpaper();
+        GameObject[] generatedWalls = new GameObject[5];
+        generatedWalls[0] = GenerateWall(cX - sizeX + wallSize, cZ);
+        generatedWalls[1] = GenerateWall(cX + sizeX - wallSize, cZ);
+        generatedWalls[2] = GenerateWall(cX, cZ - sizeZ + wallSize, false);
+        generatedWalls[3] = GenerateWall(cX, cZ + sizeZ - wallSize, false);
+        
+        //Generate gunRoom
+        float chosen = Random.Range(0f,1f);
+        float sum = 0;
+        int index = generationChance.Length - 1;
+
+        for (int i = 0; i < generationChance.Length - 1; i++){
+            if(chosen < generationChance[i] + sum)
+                index = i;
+        }
+
+        if(index == 1 && generatedGunRoom != null){
+            index = 0;
+        }
+
+        switch(index){
+            case 1:
+                roomType = RoomType.gunRoom;
+                generatedWalls[4] = Instantiate(gunRoom, new Vector3(cX, 0, cZ), Quaternion.Euler(new Vector3(0, 0 ,0)));
+                GunTable gt =  generatedWalls[4].transform.Find("gunTable").GetComponent<GunTable>();
+                gt.TrigerUsed += UsedAnotherGun;
+                gt.PlaceGun(GetGun());
+                break;
+            default:
+                roomType = RoomType.simple;
+                generatedWalls[4] = Instantiate(RandomMainRoomInner(), new Vector3(cX, 0, cZ), Quaternion.Euler(new Vector3(0, Random.Range(0,2) * 180 ,0)));
+                break;
+        }
+        //End generate gunRoom
+
+        for (int i = 0; i < generatedWalls.Length; i++)
+        {
+            generatedWalls[i].transform.parent = tempRoom.transform;
+            for (int j = 0; j < generatedWalls[i].transform.childCount; j++)
+            {
+                if (generatedWalls[i].transform.GetChild(j).GetComponent<MeshRenderer>())
+                {
+                    generatedWalls[i].transform.GetChild(j).GetComponent<MeshRenderer>().material = roomMat;
+                }
+            }
+        }
+
+        AddInnerDoor(generatedWalls[4]);
+
+        temporaryGameObj = Instantiate(floor, new Vector3(cX, 0, cZ), _transform.rotation);
+        temporaryGameObj.transform.parent = tempRoom.transform;
+        temporaryGameObj.GetComponent<MeshRenderer>().material = RandomFloorMaterial();
+        generatedRoom = new RoomAndDist(tempRoom, _transform.position, roomType);
+        
+        if(roomType == RoomType.gunRoom){
+            generatedGunRoom = generatedRoom.gO;
+        }
+
+        eManager.SpawnEnemys(cX,cZ);
+        
+        return generatedRoom;
+    }
+
+    void DeleteRoom(RoomAndDist toDel)
+    {
+        Collider[] col = Physics.OverlapBox(toDel.gO.transform.position, new Vector3(sizeX,1,sizeZ), _transform.rotation, LayerMask.GetMask("door", "weapon", "enemy"));
+        for(int i = 0; i < col.Length; i++)
+        {
+            Destroy(col[i].gameObject);
+        }
+
+        //Check if inner eq to generated 
+        if(toDel.gO == generatedGunRoom)
+            generatedGunRoom = null;
+
+        Destroy(toDel.gO);
+    }
+
+    GameObject GenerateWall(float x, float z, bool hor = true)
+    {
+        GameObject to_ret;
+        Vector3 centrOfWall = new Vector3(x,0,z);
+        if (Mathf.Abs(x) > MaxDist || Mathf.Abs(z) > MaxDist)
+        {
+            if (hor)
+                to_ret = Instantiate(blockWX, centrOfWall, _transform.rotation);
+            else
+                to_ret = Instantiate(blockWZ, centrOfWall, _transform.rotation);
+            
+            
+            return to_ret;
+        }
+
+        Collider[] col = Physics.OverlapBox(centrOfWall, Vector3.one, _transform.rotation, outerLayerMask);
+        if (col.Length <= 0)
+        {
+            if (hor)
+                to_ret = Instantiate(RandomXWall(), centrOfWall, _transform.rotation);
+            else
+                to_ret = Instantiate(RandomZWall(), centrOfWall, _transform.rotation);
+            return to_ret;
+        }
+
+        to_ret = Instantiate(col[0].gameObject.transform.parent.gameObject, centrOfWall, _transform.rotation);
+
+        for (int i = 0; i < to_ret.transform.childCount; i++)
+        {
+            if (to_ret.transform.GetChild(i).name == "door")
+            {
+                to_ret.transform.GetChild(i).Rotate(Vector3.up * (180 * Random.Range(0, 2)));
+
+                Instantiate(link, to_ret.transform.GetChild(i).transform).transform.parent = Instantiate(RandomDoor(), to_ret.transform.GetChild(i).transform).transform; ;
+            }
+
+        }
+
+        return to_ret;
+    }
+
+
+    void AddInnerDoor(GameObject wall)
+    {
+        for (int i = 0; i < wall.transform.childCount; i++)
+        {
+            if (wall.transform.GetChild(i).name == "door")
+            {
+                wall.transform.GetChild(i).Rotate(Vector3.up * (180 * Random.Range(0, 2)));
+                
+                Instantiate(RandomDoor(), wall.transform.GetChild(i).transform);
+            }
+
+        }
+    }
+
+    public void UsedAnotherGun(){
+        if(weaponList.Count > 0){
+            usedGuns.Add(weaponList[0]);
+            eManager.guns = usedGuns;
+            weaponList.RemoveAt(0);
+        }
+    }
+    \end{lstlisting}
+    
 	\section*{Заключение}
 	\addcontentsline{toc}{section}{Заключение}
     

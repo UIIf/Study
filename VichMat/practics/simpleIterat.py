@@ -31,13 +31,25 @@ class Method:
 # ]
 # b = [10,12,8]
 
+# matrix = [
+# 	[2 , 1  , 1],
+# 	[1 , 2.5, 1],
+# 	[1 , 1  , 3],
+# ]
+
+# matrix = [[1.111, 1.222, 0.333],
+#   [1.222, 1.444, 0.555],
+#   [0.333, 0.555, 1.666]]
+
+# b = [1, 1, 1]
+
 matrix = [
-	[2 , 1  , 1],
-	[1 , 2.5, 1],
-	[1 , 1  , 3],
+	[2, 1],
+	[1, 2]
 ]
 
-b = [1, 1, 1]
+b = [4, 5]
+
 
 def simple_iter_calculate_x(alpha,beta,x,w):
 	return plus(beta,mul(tranвspose(dot(alpha,x))[0],-1))
@@ -88,13 +100,14 @@ def Richardson(alpha, beta, x, n):
 		tau = tau_z/(1 + ro * nu)
 
 		new_x = plus(mul(plus(beta, transpose(mul(dot(alpha, new_x), -1))[0]),tau),new_x)
-
+	print("rich", new_x)
 	return new_x
 		
 
 def solve(matrix, b, epsilon, meth):
 	x_prev = [0 for i in range(len(matrix))]
 
+	x_prev = [2, 2.5]
 	if(meth.ch):
 
 		alpha = [ [matrix[i][j]/matrix[i][i] for j in range(len(matrix))] for i in range(len(matrix))]
@@ -107,7 +120,7 @@ def solve(matrix, b, epsilon, meth):
 
 	count = 1
 	x = meth.func(alpha, beta, x_prev, meth.w)
-	while(vector_norm_1(plus(mul(x,-1), x_prev)) >= epsilon):
+	while(abs(sum([abs(i) for i in plus(mul(x,-1), x_prev)])) >= epsilon):
 		x_prev = x
 		x = meth.func(alpha,beta,x_prev, meth.w)
 		# print(count,x)
@@ -116,13 +129,13 @@ def solve(matrix, b, epsilon, meth):
 	print('Count:',count)
 	return x
 
-eps = 1e-2
+eps = 1e-3
 
 grad = Method(grad_spusk, False)
 simpl = Method(simple_iter_calculate_x)
 zedal = Method(zaiendal_calculate_x)
 relax = Method(relax_calculate_x, w = 1)
-richard = Method(Richardson,False, w = 6)
+richard = Method(Richardson,False, w = 7)
 
 # x = solve(matrix, b, eps, zedal)
 

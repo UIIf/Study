@@ -1,8 +1,14 @@
+from matrix import *
+import numpy.linalg
 matrix = [
 	[2 , 1  , 1],
 	[1 , 2.5, 1],
 	[1 , 1  , 3],
 ]
+# matrix = [
+# 	[2 , 1],
+# 	[1 , 2]
+# ]
 
 def sgn(num):
 	return 1 if num > 0 else -1
@@ -62,6 +68,12 @@ def self_mean_method_sim(matrix, p):
 	# print(counter)
 	return [matrix[i][i] for i in range(len(matrix))]
 
-m = self_mean_method_sim(matrix, 4)
+m = self_mean_method_sim(matrix, 8)
 print("Answer")
+e = ones(len(matrix))
+for i in range(len(matrix)):
+	e[i][i] *= m[i]
+
+new_matrix = plus(matrix, mul(e,-1))
 print(m)
+print(numpy.linalg.eig(matrix)[0])
