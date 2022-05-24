@@ -75,5 +75,7 @@ for i in range(len(matrix)):
 	e[i][i] *= m[i]
 
 new_matrix = plus(matrix, mul(e,-1))
+m.sort()
+m.reverse()
 print(m)
 print(numpy.linalg.eig(matrix)[0])

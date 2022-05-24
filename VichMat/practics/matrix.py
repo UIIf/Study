@@ -201,6 +201,8 @@ def vector_norm_1(vec):
 			vec = [i[0] for i in vec]
 		else:
 			vec = vec[0]
+	if(type(vec[0]) is list):
+		vec = [i[0] for i in vec]
 	return sum([abs(x) for x in vec])
 
 
@@ -267,3 +269,6 @@ def self_mean_method_sim(matrix, p):
 
 	#/Собственные значения матрицы
 	#---------------------------------------------------------------------
+
+def euq_len(x):
+	return sum([i*i for i in x])**0.5
