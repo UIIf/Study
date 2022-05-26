@@ -37,19 +37,24 @@ class Method:
 # 	[1 , 1  , 3],
 # ]
 
-# matrix = [[1.111, 1.222, 0.333],
-#   [1.222, 1.444, 0.555],
-#   [0.333, 0.555, 1.666]]
+matrix = [[1.111, 1.222, 0.333],
+  [1.222, 1.444, 0.555],
+  [0.333, 0.555, 1.666]]
 
-# b = [1, 1, 1]
+b = [1, 1, 1]
 
-matrix = [
-	[2, 1],
-	[1, 2]
-]
+# matrix = [
+# 	[2, 1],
+# 	[1, 2]
+# ]
 
-b = [4, 5]
+# b = [4, 5]
 
+matrix = [[10, 1., 0.5, 2.],
+                  [1., 10, 2., 1.],
+                  [0.5, 2, 10, 1.6],
+                  [2., 1., 1.6, 10]]
+b=  [1, 1, 1,1]
 
 def simple_iter_calculate_x(alpha,beta,x,w):
 	return plus(beta,mul(tranвspose(dot(alpha,x))[0],-1))
@@ -98,16 +103,14 @@ def Richardson(alpha, beta, x, n):
 
 		nu = cos((2*k-1)*pi/2/n)
 		tau = tau_z/(1 + ro * nu)
-
 		new_x = plus(mul(plus(beta, transpose(mul(dot(alpha, new_x), -1))[0]),tau),new_x)
-	print("rich", new_x)
+
 	return new_x
 		
 
 def solve(matrix, b, epsilon, meth):
 	x_prev = [0 for i in range(len(matrix))]
 
-	x_prev = [2, 2.5]
 	if(meth.ch):
 
 		alpha = [ [matrix[i][j]/matrix[i][i] for j in range(len(matrix))] for i in range(len(matrix))]

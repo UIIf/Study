@@ -1,11 +1,10 @@
-from matrix import ones, dot, transpose, mul, euq_len, vector_norm_1, sgn, plus
+from matrix import ones, dot, transpose, mul, euq_len, vector_norm_1, sgn, plus, inv_rec
 import numpy.linalg
 
-matrix = [
-	[2 , 1  , 1],
-	[1 , 2.5, 1],
-	[1 , 1  , 3],
-]
+matrix = [[2.2, 1., 0.5, 2.],
+                  [1., 1.3, 2., 1.],
+                  [0.5, 2, 0.5, 1.6],
+                  [2., 1., 1.6, 2.]]
 
 def find_max_self(matrix, eps):
 	counter = 1
@@ -23,6 +22,24 @@ def find_max_self(matrix, eps):
 	print('Iters', counter, )
 	return lam
 	
+def find_min_self(matrix, eps):
+	invt = inv_rec(matrix)
+	x = [1]*len(matrix)
+
+	l_p = 0
+	l = 1
+	counter = 0
+	while(abs(l - l_p) >= eps):
+		l_p = l
+		x = transpose(dot(invt, mul(x,l)))[0]
+		l = 1/max([abs(i) for i in x])
+		counter += 1
+	print('Iters', counter, )
+	return l
+
 
 print(find_max_self(matrix, 1e-4))
 print(max(numpy.linalg.eig(matrix)[0]))
+print("REv")
+print(find_min_self(matrix, 1e-8))
+print(min(abs(i) for i in numpy.linalg.eig(matrix)[0]))
