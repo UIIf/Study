@@ -2,11 +2,23 @@ from matrix import *
 import numpy.linalg
 
 A = [	
-		[2.2, 1., 0.5, 2.],
-      	[1., 1.3, 2., 1.],
-      	[0.5, 2, 0.5, 1.6],
-      	[2., 1., 1.6, 2.]
+		[ 4, 1, -2,  2],
+      	[ 1, 2,  0,  1],
+      	[-2, 0,  3, -2],
+      	[ 2, 1, -2, -1]
     ]
+A = [
+		[ 5, 6,  3],
+	 	[-1, 0,  1],
+	 	[ 1, 2, -1]
+	 	]
+
+A = [
+		[-40, 1,   2,  2],
+      	[  1, 2,   0, 1],
+      	[  2, 0,   3, 2],
+      	[  2, 1, 0.1, 1]
+]
 
 #QR_START________________________________
 
@@ -85,6 +97,34 @@ def generate_l_u(matrix):
 	return [u,l]
 
 #LU_END__________________________________
+
+#HOUSEHOLDER_START_______________________
+
+def create_houseHolder(matrix):
+	matrix = [ r[:] for r in matrix]
+	for k in range(len(matrix) - 2):
+
+		a = -deta(matrix[k + 1][k]) * (sum([(matrix[j][k])**2 for j in range(k+1, len(matrix))]))**0.5
+		
+		r = ((a*a - matrix[k + 1][k]*a)/2)**0.5
+		v = [0 for i in matrix]
+
+		for j in range(k+1, len(matrix)):
+			v[j] = matrix[j][k]/(2*r)
+
+		v[k+1] -= a/(2*r)
+		v = transpose(v)
+		P = plus(ones(len(matrix)), mul(dot(transpose(v), v), -2))
+
+		matrix = dot(dot(P, matrix),P)
+	for i in range(len(matrix)):
+		for j in range(len(matrix[i])):
+			if(matrix[i][j] < 1e-10):
+				matrix[i][j] = 0
+	return matrix
+
+#HOUSEHOLDER_END_________________________
+
 def find_max_nd_ind(matrix):
 	mi, mj = 0,1
 	for i in range(len(matrix)):
@@ -93,13 +133,18 @@ def find_max_nd_ind(matrix):
 				mi, mj = i, j
 	return [mi, mj]
 
+
+
 #NP----------------------------------------
 print("np", numpy.linalg.eig(A)[0])
+print("np", numpy.linalg.eig(create_houseHolder(A))[0])
 
 #QR----------------------------------------
 qrA = [r[:] for r in A]
 ind = find_max_nd_ind(qrA)
-while(qrA[ind[0]][ind[1]] > 0.01):
+counter = 0
+for i in range(500):
+	counter+=1
 	Q,R = qr_razloj(qrA)
 	qrA = dot(R,Q)
 	ind = find_max_nd_ind(qrA)
@@ -107,21 +152,28 @@ while(qrA[ind[0]][ind[1]] > 0.01):
 qr_self = [qrA[i][i] for i in range(len(qrA))]
 qr_self.sort()
 qr_self.reverse()
+print(counter)
+for i in qrA:
+	print(i)
 print("QR", qr_self)
 
+#QR----------------------------------------
+# qrA = [r[:] for r in create_3diag(A)]
+# ind = find_max_nd_ind(qrA)
+# counter = 0
+# while(abs(qrA[ind[0]][ind[1]]) > 1e-6):
+# 	counter+=1
+# 	Q,R = qr_razloj(qrA)
+# 	qrA = dot(R,Q)
+# 	ind = find_max_nd_ind(qrA)
+
+# qr_self = [qrA[i][i] for i in range(len(qrA))]
+# qr_self.sort()
+# qr_self.reverse()
+# print(counter)
+# print("QR", qr_self)
+
 #LU----------------------------------------
-luA = [r[:] for r in A]
-ind = find_max_nd_ind(luA)
-for i in range(50):
-	U,L = qr_razloj(luA)
-	luA = dot(U,L)
-	ind = find_max_nd_ind(luA)
 
-# lu_self = [luA[i][i] for i in range(len(luA))]
-# lu_self.sort()
-# lu_self.reverse()
-# print("LU", lu_self)
-
-print("LU")
-for i in luA:
+for i in create_houseHolder(A):
 	print(i)
