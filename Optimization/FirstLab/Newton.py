@@ -1,6 +1,6 @@
 import random
 
-n = 3
+n = 4
 
 def transpose(m):
 
@@ -159,12 +159,12 @@ def grad_method(x,a,b,step = 0.0001):
 
 a, b = pre_generate()
 
-a = [
-	[49, -56, 28],
-	[-56, 164, 18],
-	[28, 18, 122]
-]
-b = [[-8, 1, 3]]
+# a = [
+# 	[49, -56, 28],
+# 	[-56, 164, 18],
+# 	[28, 18, 122]
+# ]
+# b = [[-8, 1, 3]]
 print("A")
 for i in a:
 	print(i)

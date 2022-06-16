@@ -21,7 +21,7 @@ def dfunc(x, a, b):
 	return np.dot(a,x) + b
 
 def newtons_method(x,a,b):
-	return x - np.dot(np.linalg.inv(a), dfunc(x,a,b))
+	return x - dot(inv(a), dfunc(x,a,b))
 
 a,b = pre_generate()
 
