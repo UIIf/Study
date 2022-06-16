@@ -10,9 +10,9 @@
 
 struct inside_circle {
 __device__
-unsigned int operator()(float2 p) const {
-return (((p.x-0.5)*(p.x-0.5)+(p.y-0.5)*(p.y-0.5))<0.25) ? 1 : 0;
-}
+	unsigned int operator()(float2 p) const {
+		return (((p.x-0.5)*(p.x-0.5)+(p.y-0.5)*(p.y-0.5))<0.25) ? 1 : 0;
+	}
 };
 
 struct randomPoint {
