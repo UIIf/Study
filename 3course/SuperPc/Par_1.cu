@@ -1,14 +1,14 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <assert.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
 
 __global__ void trapezoidalIntegral(double* sum, double h, double begin) {
-	unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
 	double x_1 = begin + i * h, x_2 = begin + (i + 1) * h;
-	double x_3 = x_1 * x_1, x_4 = x_2 * x_2;
+    double y_1 = 2*sqrt( (float) 1 - x_1*x_1);
+    double y_2 = 2*sqrt( (float) 1 - x_2*x_2);
 
-	sum[i] = 0.5 * (x_2 - x_1) * (x_3 + x_4);
+    sum[i] = (y_1 + y_2)/2*h;
 }
 
 __global__ void reduce(double* res) {

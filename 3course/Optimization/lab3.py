@@ -2,8 +2,8 @@ import numpy as np
 import copy
 
 
-n = 8
-m = 6
+n = 3
+m = 3
 
 def set_matrix():
     return [
@@ -147,6 +147,15 @@ def print_result(n, new_par, old_par, Ind, offset = 0, letter = "x"):
 
 
 A, b, c = set_matrix()
+
+A = np.array([
+    [2, 3, 6],
+    [4, 2, 4],
+    [4, 6, 8]
+], dtype = np.float64)
+
+b = np.array([240, 200, 160], dtype = np.float64)
+c = np.array([4,5,4], dtype = np.float64)
 
 print("A =")
 print(A)

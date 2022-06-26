@@ -145,9 +145,11 @@ def ddfunc(x,a,b):
 def newtons_method(x,a,b):
 	return plus(x, mul(dot(inv(ddfunc(x,a,b)), dfunc(x,a,b)) ,-1))
 
-def grad_method(x,a,b,step = 0.0001):
+def grad_method(x,a,b,step = 0.1):
+	iters = 0
 	xn = [r[:] for r in x]
-	while(step > 0.000000001):
+	while(step > 0.001):
+		iters += 1
 		start = func(xn,a,b)
 		d = dfunc(xn,a,b)
 		right  = mul(d ,-step)
@@ -155,6 +157,7 @@ def grad_method(x,a,b,step = 0.0001):
 		end = func(xn,a,b)
 		if(start < end):
 			step /= 10
+	print(iters)
 	return xn
 
 a, b = pre_generate()

@@ -15,7 +15,6 @@ void calculate(int *result, int *count, int N)
 			atomicAdd(result, 1);
 		}
 		
-		atomicAdd(count, 1);
 	}
 }
 

@@ -9,8 +9,7 @@
 #include <thrust/transform_reduce.h>
 
 struct inside_circle {
-__device__
-	unsigned int operator()(float2 p) const {
+	__device__ unsigned int operator()(float2 p) const {
 		return (((p.x-0.5)*(p.x-0.5)+(p.y-0.5)*(p.y-0.5))<0.25) ? 1 : 0;
 	}
 };
@@ -32,7 +31,7 @@ int main()
 	thrust::counting_iterator<unsigned int> d_indexSequence(N);
 	thrust::transform(d_indexSequence, d_indexSequence + N, d_random.begin(), randomPoint());
 	
-	thrust::device_vector<unsigned int> d_inside(N);
+	
 	int sum = thrust::transform_reduce(d_random.begin(), d_random.end(), inside_circle(), 0, thrust::plus<int>());
 
 	
