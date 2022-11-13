@@ -21,8 +21,8 @@ def gamma_0(t):
 def gamma_1(t):
 	return 3*t*t
 
-M = 100
-N = 100
+M = 200
+N = 200
 
 L = 1
 T = 1
@@ -67,7 +67,11 @@ FillTLim()
 CalcM1()
 CalcMN()
 
+borders = [U.min() - 1, U.max() + 1]
 
 for n in range(N):
+	plt.clf()
+	plt.ylim(borders)
 	plt.plot(np.linspace(0, L, M), U[n,:])
+	plt.pause(tau*2)
 plt.show()
