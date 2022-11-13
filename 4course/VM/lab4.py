@@ -57,7 +57,7 @@ def CalcMN():
 	s_h = h*h
 
 	all_m_x = np.linspace(0, L, M)[1:-2]
-	all_m = np.arange(1, M-2)
+	all_m = np.arange(1, M-1)
 
 	for n in range(2, N):
 		U[n, all_m] = s_tau*(s_a/s_h*(U[n - 1, all_m - 1] - 2 * U[n-1, all_m ]  +  U[n - 1,all_m + 1]) + g(all_m_x, n*tau)) - U[n - 2, all_m] + 2*U[n - 1, all_m]
