@@ -11,9 +11,11 @@
 
 # V5
 # u'' - u' - 2u = -3e^(-x)
-# u'(0) = 1
+# u'(0) = 1 => u(0) = 0
 # u(1) + 2u'(1) = 0
 # u_p(x) = (x + 1)e^(-x)
+
+# u(x) = (x + 1)e^(-x)
 
 from sympy import Symbol, Piecewise, lambdify, init_printing
 import scipy as sc
@@ -24,43 +26,44 @@ import matplotlib.pyplot as plt
 
 # u(x) = Sum(C_i*phi_i(x))
 
-a = 0
-b = 1
-
-N = 10
-h = (b - a) / N
-x_i = np.arange(a, b + h, h)
-
-
-def P(x):
-    return -1
-
-
-def Q(x):
-    return -2
-
-
-def F(x):
-    return -3 * np.exp(-x)
-
-
-# a = -1
+# a = 0
 # b = 1
 
-# N = 4
-# h = 0.5
-# x_i = [-1, -0.5, 0, 0.5, 1]
+# N = 10
+# h = (b - a) / N
+# x_i = np.arange(a, b + h, h)
+
 
 # def P(x):
-#     return 0
+#     return -1
 
 
 # def Q(x):
-#     return 1 + x**2
+#     return -2
 
 
 # def F(x):
-#     return -1
+#     return -3 * np.exp(-x)
+
+
+a = -1
+b = 1
+
+N = 4
+h = 0.5
+x_i = [-1, -0.5, 0, 0.5, 1]
+
+
+def P(x):
+    return 0
+
+
+def Q(x):
+    return 1 + x**2
+
+
+def F(x):
+    return -1
 
 
 def create_phi(x_i, h):
@@ -132,8 +135,8 @@ def calc_semi(x, phi, C):
     return ret
 
 
-real = (show_x + 1) * np.exp(-show_x) - show_x
-plt.plot(show_x, real)
+# real = (show_x + 1) * np.exp(-show_x)
+# plt.plot(show_x, real)
 plt.plot(show_x, calc_final(show_x, phi, C))
 semi = calc_semi(show_x, phi, C)
 
