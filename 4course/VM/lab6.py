@@ -1,23 +1,12 @@
-# Finite difference method
-# phi = (x - x_{i-1})/h if x in range(x_{i-1}, x_i)
-# phi = -(x - x_{i+1})/h if x in range(x, x_{+1})
-# phi = 0 if not x in range(x_{i-1}, x_{i+1})
-
-# Galerkin
-
-
-# if u(a) = u(b) = 0:
-#     phi(0) = 0, phi(i) = (1 - x^(2*i))
-
 # V5
 # u'' - u' - 2u = -3e^(-x)
-# u'(0) = 1 => u(0) = 0
+# u'(0) = 1 => u(0) = const
 # u(1) + 2u'(1) = 0
 # u_p(x) = (x + 1)e^(-x)
 
 # u(x) = (x + 1)e^(-x)
 
-from sympy import Symbol, Piecewise, lambdify, init_printing
+from sympy import Symbol, Piecewise, lambdify, init_printing, diff
 import scipy as sc
 from scipy.integrate import quad
 import numpy as np
@@ -26,44 +15,28 @@ import matplotlib.pyplot as plt
 
 # u(x) = Sum(C_i*phi_i(x))
 
-# a = 0
-# b = 1
-
-# N = 10
-# h = (b - a) / N
-# x_i = np.arange(a, b + h, h)
-
-
-# def P(x):
-#     return -1
-
-
-# def Q(x):
-#     return -2
-
-
-# def F(x):
-#     return -3 * np.exp(-x)
-
-
-a = -1
+a = 0
 b = 1
 
-N = 4
-h = 0.5
-x_i = [-1, -0.5, 0, 0.5, 1]
+N = 10
+h = (b - a) / N
+x_i = np.arange(a, b + h, h)
 
 
-def P(x):
-    return 0
+def P(x, dv):
+    return -1 * dv(x)
 
 
-def Q(x):
-    return 1 + x**2
+def Q(x, v):
+    return -2 * v(x)
 
 
 def F(x):
-    return -1
+    return -3 * np.exp(-x)
+
+
+def target(x):
+    return (x + 1) * np.exp(-x)
 
 
 def create_phi(x_i, h):
@@ -87,9 +60,13 @@ def create_phi(x_i, h):
 def component_a(x, i, j):
     return (
         -phi_d[j](x) * phi_d[i](x)
-        + P(x) * phi_d[j](x) * phi[i](x)
-        + Q(x) * phi[j](x) * phi[i](x)
+        + P(x, dv) * phi_d[j](x) * phi[i](x)
+        + Q(x, v) * phi[j](x) * phi[i](x)
     )
+
+
+def create_v(A=1, B=1):
+    return lambda x: 1 - 0.26424111765711533 * x, lambda x: 0.26424111765711533
 
 
 def component_d(x, i):
@@ -99,6 +76,8 @@ def component_d(x, i):
 phi, phi_d = create_phi(x_i, h)
 
 A = np.zeros((N - 1, N - 1))
+
+v, dv = create_v()
 
 for i in range(N - 1):
     for j in range(N - 1):
@@ -135,11 +114,13 @@ def calc_semi(x, phi, C):
     return ret
 
 
-# real = (show_x + 1) * np.exp(-show_x)
-# plt.plot(show_x, real)
-plt.plot(show_x, calc_final(show_x, phi, C))
+plt.plot(show_x, calc_final(show_x, phi, C), color="blue", zorder=5, label="predict")
+plt.plot(show_x, target(show_x) - v(show_x), color="red", zorder=5, label="taget")
 semi = calc_semi(show_x, phi, C)
 
 for s in semi:
-    plt.plot(show_x, s)
+    plt.plot(show_x, s, color="#00700070")
+
+print(1 - 0.7357588823428847)
+plt.legend()
 plt.show()
