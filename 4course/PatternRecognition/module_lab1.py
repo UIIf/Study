@@ -97,12 +97,71 @@ def calc_M_hat(x):
     return x.sum(axis=0) / x.shape[0]
 
 
-def calc_B_hat(x):
-    M_hat = calc_M_hat(x)
-
+def calc_B_hat(x, M=1.0):
+    if type(M) is float:
+        M = calc_M_hat(x)
+    M_hat = M
     first = x - M_hat
     return np.dot(first.T, first) / x.shape[0]
 
 
 def create_bin_vec(N, p, dims=10):
     return (np.random.random([N, dims]) < p).astype(int)
+
+
+def accuracy(y_target, y_pred):
+    return (y_target == y_pred).sum() / y_target.shape[0]
+
+
+def plot_dots(vectors, borders, steps=None):
+
+    if steps == None:
+        plt.xlim(borders[0])
+        plt.ylim(borders[1])
+        for target, vec in enumerate(vectors):
+            vec = np.array(vec)
+            plt.scatter(vec[:, 0], vec[:, 1], label=target)
+    else:
+        plt.xlim(0, steps[0])
+        plt.ylim(0, steps[1])
+        ...
+
+        for target, vec in enumerate(vectors):
+            vec = np.array(vec)
+
+            vec[:, 0] = (
+                (vec[:, 0] - borders[0][0]) / (borders[0][1] - borders[0][0]) * steps[0]
+            )
+            vec[:, 1] = (
+                (vec[:, 1] - borders[1][0]) / (borders[1][1] - borders[1][0]) * steps[1]
+            )
+            plt.scatter(vec[:, 0], vec[:, 1], label=target)
+
+
+def create_pred_img(pred_func, borders, steps=[16, 10], cmap="viridis"):
+
+    x_linspace = np.linspace(borders[0][0], borders[0][1], steps[0])
+    y_linspace = np.linspace(borders[1][0], borders[1][1], steps[1])
+
+    lam = lambda x, y: pred_func(np.array([x, y]))
+
+    matrix = np.array([[lam(x, y) for x in x_linspace] for y in y_linspace])
+
+    plt.figure(figsize=(16, 9))
+    plt.imshow(matrix, cmap=cmap, origin="lower")
+
+
+def find_borders(vectors):
+    x_min = min([min(vec[:, 0]) for vec in vectors])
+    x_max = max([max(vec[:, 0]) for vec in vectors])
+
+    y_min = min([min(vec[:, 1]) for vec in vectors])
+    y_max = max([max(vec[:, 1]) for vec in vectors])
+
+    return ([x_min, x_max], [y_min, y_max])
+
+
+def plot_classifier_field(vectors, pred_func, steps=[100, 100], cmap="viridis"):
+    borders = find_borders(vectors)
+    create_pred_img(pred_func, borders, steps, cmap=cmap)
+    plot_dots(vectors, borders, steps=steps)
