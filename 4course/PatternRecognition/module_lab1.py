@@ -113,14 +113,14 @@ def accuracy(y_target, y_pred):
     return (y_target == y_pred).sum() / y_target.shape[0]
 
 
-def plot_dots(vectors, borders, steps=None):
+def plot_dots(vectors, borders, steps=None, colors=None):
 
     if steps == None:
         plt.xlim(borders[0])
         plt.ylim(borders[1])
         for target, vec in enumerate(vectors):
             vec = np.array(vec)
-            plt.scatter(vec[:, 0], vec[:, 1], label=target)
+            plt.scatter(vec[:, 0], vec[:, 1], label=target, c=colors)
     else:
         plt.xlim(0, steps[0])
         plt.ylim(0, steps[1])
@@ -135,7 +135,7 @@ def plot_dots(vectors, borders, steps=None):
             vec[:, 1] = (
                 (vec[:, 1] - borders[1][0]) / (borders[1][1] - borders[1][0]) * steps[1]
             )
-            plt.scatter(vec[:, 0], vec[:, 1], label=target)
+            plt.scatter(vec[:, 0], vec[:, 1], label=target, c=colors)
 
 
 def create_pred_img(pred_func, borders, steps=[16, 10], cmap="viridis"):
@@ -161,7 +161,9 @@ def find_borders(vectors):
     return ([x_min, x_max], [y_min, y_max])
 
 
-def plot_classifier_field(vectors, pred_func, steps=[100, 100], cmap="viridis"):
+def plot_classifier_field(
+    vectors, pred_func, steps=[100, 100], colors=None, cmap="viridis"
+):
     borders = find_borders(vectors)
     create_pred_img(pred_func, borders, steps, cmap=cmap)
-    plot_dots(vectors, borders, steps=steps)
+    plot_dots(vectors, borders, steps=steps, colors=colors)
